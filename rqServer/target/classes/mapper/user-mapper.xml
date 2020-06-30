@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wrpxcx.mapper.UserMapper">
+    <insert id="addUser" parameterType="com.wrpxcx.entity.User">
+        insert into tb_user(user_id, user_name, user_sign, user_head_img)
+        value (#{userId}, #{userName}, #{userSign}, #{userHeadImg})
+    </insert>
+
+    <insert id="addTbLogin" >
+        insert into tb_login(user_id, password)
+        value (#{userId}, #{password})
+    </insert>
+
+    <select id="checkUser" resultType="Integer">
+        select count(*) from tb_login where user_id=#{userId} and password=#{password}
+    </select>
+
+    <update id="updateUser" parameterType="com.wrpxcx.entity.User">
+        update tb_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName!=null">user_name=#{userName},</if>
+            <if test="userHeadImg!=null">user_head_img=#{userHeadImg},</if>
+            <if test="userSign!=null">user_sign=#{userSign},</if>
+        </trim>
+        WHERE user_id=#{userId}
+    </update>
+
+    <select id="getUserById"  resultType="com.wrpxcx.entity.User" parameterType="String">
+        select * from tb_user where user_id=#{userId}
+    </select>
+
+    <update id="updatePassword">
+        update tb_login
+        <trim prefix="set" suffixOverrides=",">
+            <if test="password!=null">password=#{password},</if>
+        </trim>
+        WHERE user_id=#{userId}
+    </update>
+
+</mapper>

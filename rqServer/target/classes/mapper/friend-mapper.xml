@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wrpxcx.mapper.FriendMapper">
+    <select id="getFriendById" resultType="com.wrpxcx.entity.FriendDetail">
+        select my_id, friend_id, friend_group_id,
+                user_name friend_name, user_sign friend_sign, user_head_img friend_head_img,
+                group_name
+                from tb_friend
+                inner join tb_user on tb_user.user_id=friend_id
+                inner join tb_group on friend_group_id=group_id
+                where my_id=#{userId}
+                order by group_id
+    </select>
+
+    <insert id="addFriend" parameterType="com.wrpxcx.entity.Friend">
+        insert into tb_friend(my_id, friend_id, friend_group_id)
+            value (#{myId}, #{friendId}, #{friendGroupId})
+    </insert>
+
+    <delete id="removeFriend">
+        delete from tb_friend where my_id=#{myId} and friend_id=#{friendId}
+    </delete>
+
+    <update id="changeFriendGroup" parameterType="com.wrpxcx.entity.Friend">
+        update tb_friend
+        set
+        friend_group_id=#{friendGroupId}
+        where
+        my_id=#{myId} and friend_id=#{friendId}
+    </update>
+
+    <select id="checkFriend" parameterType="com.wrpxcx.entity.Friend" resultType="Integer">
+        select count(*) from tb_friend where my_id=#{myId} and friend_id=#{friendId}
+    </select>
+
+    <select id="getFriendByMyIdAndFriendId" resultType="com.wrpxcx.entity.FriendDetail">
+        select my_id, friend_id, friend_group_id,
+                user_name friend_name, user_sign friend_sign, user_head_img friend_head_img,
+                group_name
+                from tb_friend
+                inner join tb_user on tb_user.user_id=friend_id
+                inner join tb_group on friend_group_id=group_id
+                where my_id=#{myId} and friend_id=#{friendId}
+    </select>
+
+    <insert id="addGroup" parameterType="com.wrpxcx.entity.Group">
+        insert into tb_group(group_id, user_id, group_name) value (#{groupId}, #{userId}, #{groupName})
+    </insert>
+
+    <delete id="removeGroup" parameterType="String">
+        delete from tb_group where group_id=#{groupId}
+    </delete>
+
+    <select id="getGroupByUserId" resultType="com.wrpxcx.entity.Group">
+        select * from tb_group where user_id=#{userId}
+    </select>
+
+</mapper>

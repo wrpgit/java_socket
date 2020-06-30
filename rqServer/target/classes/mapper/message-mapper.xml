@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wrpxcx.mapper.MessageMapper">
+    <insert id="addMessage" parameterType="com.wrpxcx.entity.Message">
+        insert into tb_message(from_id, to_id, message, message_time, status)
+                        value(#{fromId}, #{toId}, #{message}, #{messageTime}, #{status})
+    </insert>
+
+    <select id="getMessagesByUserId" resultType="com.wrpxcx.entity.Message">
+        select from_id, to_id, message, message_time, status
+                from tb_message
+                where
+                (from_id=#{fromId} and to_id=#{toId}) or (from_Id=#{toId} and to_id=#{fromId})
+                order by message_time ASC
+    </select>
+
+    <insert id="addLastMessage" parameterType="com.wrpxcx.entity.LastMessage">
+       insert into tb_last_message(from_id, to_id, last_message, last_time, not_read_num)
+        value(#{fromId}, #{toId}, #{lastMessage}, #{lastTime}, #{notReadNum})
+    </insert>
+
+    <update id="updateLastMessage" parameterType="com.wrpxcx.entity.LastMessage">
+        update tb_last_message
+        <trim prefix="set" suffixOverrides=",">
+            <if test="fromId!=null">from_id=#{fromId},</if>
+            <if test="toId!=null">to_id=#{toId},</if>
+            <if test="lastMessage!=null">last_message=#{lastMessage},</if>
+            <if test="lastTime!=null">last_time=#{lastTime},</if>
+            <if test="notReadNum!=null">not_read_num=#{notReadNum},</if>
+        </trim>
+        WHERE (from_id=#{fromId} and to_id=#{toId}) or (to_id=#{fromId} and from_id=#{toId})
+    </update>
+
+   <select id="getMessageListById" resultType="com.wrpxcx.entity.LastMessageDetail">
+       select from_id, to_id, last_message, last_time, not_read_num,
+                from_user.user_name from_name, from_user.user_head_img from_head_img,
+                to_user.user_name to_name, to_user.user_head_img to_head_img
+                from tb_last_message
+                inner join tb_user from_user on from_user.user_id=from_id
+                inner join tb_user to_user on to_user.user_id=to_id
+                where from_id=#{userId} or to_id=#{userId}
+                order by last_time
+   </select>
+
+    <select id="getMessageListByFromAndTo" resultType="com.wrpxcx.entity.LastMessageDetail">
+       select from_id, to_id, last_message, last_time, not_read_num,
+                from_user.user_name from_name, from_user.user_head_img,
+                to_user.user_name to_name, to_user.user_head_img
+                from tb_last_message
+                inner join tb_user from_user on from_user.user_id=from_id
+                inner join tb_user to_user on to_user.user_id=to_id
+                where
+                (from_id=#{fromUserId} and to_id=#{toUserId}) or (to_id=#{fromUserId} and from_id=#{toUserId})
+                order by last_time DESC
+
+    </select>
+
+    <update id="zeroNotReadNum" >
+        update tb_last_message
+        set
+         not_read_num=0
+        where
+            (from_id=#{fromId} and to_id=#{toId}) or (to_id=#{fromId} and from_id=#{toId})
+    </update>
+
+    <update id="addNotReadNum">
+        update tb_last_message
+        set
+         not_read_num = not_read_num + 1
+        where
+            (from_id=#{fromId} and to_id=#{toId}) or (to_id=#{fromId} and from_id=#{toId})
+    </update>
+
+</mapper>

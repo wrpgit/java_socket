@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.Accordion?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="666.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane prefHeight="152.0" prefWidth="380.0" style="-fx-background-color: #eee;">
+         <children>
+            <ImageView fx:id="user_head" fitHeight="100.0" fitWidth="104.0" layoutX="26.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="userName" layoutX="138.0" layoutY="30.0" prefHeight="44.0" prefWidth="162.0" text="海阔天空">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="uesr_sign" layoutX="138.0" layoutY="78.0" prefHeight="31.0" prefWidth="201.0" text="个性签名" />
+         </children>
+      </Pane>
+      <TabPane prefHeight="475.0" prefWidth="380.0" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="200.0" tabMinWidth="100.0">
+        <tabs>
+          <Tab fx:id="tabMessage" text="消息">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="417.0" prefWidth="380.0" />
+            </content>
+          </Tab>
+          <Tab fx:id="tabFriend" text="好友">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab fx:id="tabGroup" text="群组">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="405.0" prefWidth="380.0" />
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</VBox>
